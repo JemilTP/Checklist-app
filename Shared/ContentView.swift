@@ -14,37 +14,42 @@ struct ContentView: View {
                 // .padding(.init(top: 30, leading: 30, bottom: 40, trailing: 30))
                 
                 .font(.largeTitle)
-                .frame(width: 200,height: 100, alignment: .leading)
+                .frame(maxWidth: .infinity,maxHeight: 100, alignment: .topLeading)
                 .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .padding(.leading, 30)
+                .padding(.top,20)
             
-        HStack {
+                HStack {
+                    
+                    VStack(alignment: .leading){
+                
+                
+                    Text("Clean room")
+                            .padding(.leading, 30) .padding(.bottom,10)
+                        
+                        
+                    Text("Buy groceries")
+                        .padding(.leading, 30) .padding(.bottom,10)
+                        
+                    Text("Clean car")
+                        .padding(.leading, 30) .padding(.bottom,10)
+                        
+                    Text("Call Mum")
+                        .padding(.leading, 30) .padding(.bottom,10)
+                       
+                }
+                  Spacer(minLength: 50)
+                    
+                    VStack{
+                      //  Button("Done"){} .padding(.bottom, 10)
+                        Button("Done"){}.padding(.bottom, 10).padding(.trailing, 30)
+                       // Button("Done"){}.padding(.bottom, 10)
+                        Button("Done"){}.padding(.bottom, 10).padding(.trailing, 30)
+                    }
+                }
+                .frame(minWidth: 0,  maxWidth: .infinity)
             
-            VStack(alignment: .leading){
-        
-        
-            Text("Clean room")
-                    .padding(.leading, 30) .padding(.bottom,10)
-                
-                
-            Text("Buy groceries")
-                .padding(.leading, 30) .padding(.bottom,10)
-                
-            Text("Clean car")
-                .padding(.leading, 30) .padding(.bottom,10)
-                
-            Text("Call Mum")
-                .padding(.leading, 30) .padding(.bottom,10)
-               
-        }
-            VStack{
-              //  Button("Done"){} .padding(.bottom, 10)
-                Button("Done"){}.padding(.bottom, 10)
-               // Button("Done"){}.padding(.bottom, 10)
-                Button("Done"){}.padding(.bottom, 10)
-            }.padding(.leading, 165)
-        }
-        .frame(minWidth: 0,  maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-    }
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
 
