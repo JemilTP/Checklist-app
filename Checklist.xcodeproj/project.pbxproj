@@ -13,10 +13,16 @@
 		CFEA2C8B2806ACDF00F3D89F /* Tests_macOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C8A2806ACDF00F3D89F /* Tests_macOSLaunchTests.swift */; };
 		CFEA2C8C2806ACDF00F3D89F /* ChecklistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C642806ACDC00F3D89F /* ChecklistApp.swift */; };
 		CFEA2C8D2806ACDF00F3D89F /* ChecklistApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C642806ACDC00F3D89F /* ChecklistApp.swift */; };
-		CFEA2C8E2806ACDF00F3D89F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C652806ACDC00F3D89F /* ContentView.swift */; };
-		CFEA2C8F2806ACDF00F3D89F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C652806ACDC00F3D89F /* ContentView.swift */; };
+		CFEA2C8E2806ACDF00F3D89F /* Master.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C652806ACDC00F3D89F /* Master.swift */; };
+		CFEA2C8F2806ACDF00F3D89F /* Master.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C652806ACDC00F3D89F /* Master.swift */; };
 		CFEA2C902806ACDF00F3D89F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFEA2C662806ACDE00F3D89F /* Assets.xcassets */; };
 		CFEA2C912806ACDF00F3D89F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CFEA2C662806ACDE00F3D89F /* Assets.xcassets */; };
+		CFEA2CA1280B1F8E00F3D89F /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2CA0280B1F8E00F3D89F /* Detail.swift */; };
+		CFEA2CA2280B1F8E00F3D89F /* Detail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2CA0280B1F8E00F3D89F /* Detail.swift */; };
+		CFEA2CA4280B282D00F3D89F /* data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2CA3280B282D00F3D89F /* data.swift */; };
+		CFEA2CA5280B282D00F3D89F /* data.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2CA3280B282D00F3D89F /* data.swift */; };
+		CFEA2CA9280B2E9400F3D89F /* checklist_data.json in Resources */ = {isa = PBXBuildFile; fileRef = CFEA2CA8280B2E9400F3D89F /* checklist_data.json */; };
+		CFEA2CAA280B2E9400F3D89F /* checklist_data.json in Resources */ = {isa = PBXBuildFile; fileRef = CFEA2CA8280B2E9400F3D89F /* checklist_data.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +44,7 @@
 
 /* Begin PBXFileReference section */
 		CFEA2C642806ACDC00F3D89F /* ChecklistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistApp.swift; sourceTree = "<group>"; };
-		CFEA2C652806ACDC00F3D89F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CFEA2C652806ACDC00F3D89F /* Master.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Master.swift; sourceTree = "<group>"; };
 		CFEA2C662806ACDE00F3D89F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CFEA2C6B2806ACDE00F3D89F /* Checklist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Checklist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFEA2C712806ACDE00F3D89F /* Checklist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Checklist.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +55,9 @@
 		CFEA2C842806ACDE00F3D89F /* Tests macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Tests macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFEA2C882806ACDF00F3D89F /* Tests_macOS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOS.swift; sourceTree = "<group>"; };
 		CFEA2C8A2806ACDF00F3D89F /* Tests_macOSLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests_macOSLaunchTests.swift; sourceTree = "<group>"; };
+		CFEA2CA0280B1F8E00F3D89F /* Detail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Detail.swift; sourceTree = "<group>"; };
+		CFEA2CA3280B282D00F3D89F /* data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = data.swift; sourceTree = "<group>"; };
+		CFEA2CA8280B2E9400F3D89F /* checklist_data.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = checklist_data.json; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.json; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +107,11 @@
 			isa = PBXGroup;
 			children = (
 				CFEA2C642806ACDC00F3D89F /* ChecklistApp.swift */,
-				CFEA2C652806ACDC00F3D89F /* ContentView.swift */,
+				CFEA2C652806ACDC00F3D89F /* Master.swift */,
 				CFEA2C662806ACDE00F3D89F /* Assets.xcassets */,
+				CFEA2CA0280B1F8E00F3D89F /* Detail.swift */,
+				CFEA2CA3280B282D00F3D89F /* data.swift */,
+				CFEA2CA8280B2E9400F3D89F /* checklist_data.json */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -266,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFEA2CA9280B2E9400F3D89F /* checklist_data.json in Resources */,
 				CFEA2C902806ACDF00F3D89F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,6 +287,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CFEA2CAA280B2E9400F3D89F /* checklist_data.json in Resources */,
 				CFEA2C912806ACDF00F3D89F /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,8 +313,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFEA2C8E2806ACDF00F3D89F /* ContentView.swift in Sources */,
+				CFEA2CA1280B1F8E00F3D89F /* Detail.swift in Sources */,
+				CFEA2C8E2806ACDF00F3D89F /* Master.swift in Sources */,
 				CFEA2C8C2806ACDF00F3D89F /* ChecklistApp.swift in Sources */,
+				CFEA2CA4280B282D00F3D89F /* data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,8 +324,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CFEA2C8F2806ACDF00F3D89F /* ContentView.swift in Sources */,
+				CFEA2CA2280B1F8E00F3D89F /* Detail.swift in Sources */,
+				CFEA2C8F2806ACDF00F3D89F /* Master.swift in Sources */,
 				CFEA2C8D2806ACDF00F3D89F /* ChecklistApp.swift in Sources */,
+				CFEA2CA5280B282D00F3D89F /* data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

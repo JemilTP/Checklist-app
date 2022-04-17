@@ -1,21 +1,43 @@
 //
-//  ContentView.swift
-//  Shared
+//  MasterView.swift
+//  Checklist
 //
-//  Created by Jemil Pepena on 13/4/2022.
+//  Created by Jemil Pepena on 17/4/2022.
 //
 
 import SwiftUI
 
+
 struct ContentView: View {
+    
+    //var checklist:CheckList
+    @State private var Checklists : [Checklist] = []
+    
+    func initiate(){
+        self.Checklists = load()
+        print(self.Checklists)
+    }
+    
     var body: some View {
+       
         VStack{
+            
+            HStack{
+                Button("Edit"){}
+                    .padding(.leading, 30)
+                    
+                Spacer()
+                Button("Done"){}
+                    .padding(.trailing, 30)
+            }
+            .frame(alignment: .topLeading)
+            
             Text("To-Do list")
-                // .padding(.init(top: 30, leading: 30, bottom: 40, trailing: 30))
                 
                 .font(.largeTitle)
+                .fontWeight(.bold)
                 .frame(maxWidth: .infinity,maxHeight: 100, alignment: .topLeading)
-                .shadow(radius: /*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .shadow(radius: 50)
                 .padding(.leading, 30)
                 .padding(.top,20)
             
@@ -50,14 +72,15 @@ struct ContentView: View {
                 .frame(minWidth: 0,  maxWidth: .infinity)
             
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
+        
             ContentView()
-            ContentView()
-        }
+            
+        
     }
 }

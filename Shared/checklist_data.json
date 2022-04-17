@@ -1,0 +1,16 @@
+
+{ "checklists": [
+    {
+    "name": "to do list",
+    "items": ["wash car", "walk dog", "clean room"]
+    },
+    {
+        "name": "fruits",
+        "items": ["apple", "orange", "pear"]
+    },
+    {
+        "name": "Goals",
+        "items": ["bench 100kg", "lose 5kg", "improve jumpshot"]
+    }
+    ]
+}
