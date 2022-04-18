@@ -1,16 +1,19 @@
 
 { "checklists": [
     {
-    "name": "to do list",
+    "id": 0,
+    "name": "To-do list",
     "items": ["wash car", "walk dog", "clean room"]
     },
     {
-        "name": "fruits",
+        "id": 1,
+        "name": "Fruits",
         "items": ["apple", "orange", "pear"]
     },
     {
+        "id": 2,
         "name": "Goals",
-        "items": ["bench 100kg", "lose 5kg", "improve jumpshot"]
+        "items": ["bench 100kg", "lose 5kg", "improve jumpshot", "learn French"]
     }
     ]
 }

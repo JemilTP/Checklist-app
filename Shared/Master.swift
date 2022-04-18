@@ -9,9 +9,10 @@ import SwiftUI
 
 
 
-struct Checklist: Codable{
-    let name: String
-    let  items: [String]
+struct Checklist: Codable, Identifiable, Hashable{
+    var id : Int
+    var name: String
+    var  items: [String]
 }
 struct JSONData: Codable{
     let checklists : [Checklist]
@@ -28,6 +29,7 @@ func load() -> [Checklist]{
             
         }
         }
+    print(checklistArray)
     return checklistArray
     
        
@@ -36,13 +38,8 @@ func load() -> [Checklist]{
 
 struct MasterView: View {
   
-    @State private var Checklists : [Checklist] = []
-    
-    func initiate(){
-        self.Checklists = load()
-        print(self.Checklists)
-    }
-        
+    @State private var Checklists : [Checklist] = load()
+  
     var body: some View {
         VStack{
             HStack{
@@ -53,22 +50,29 @@ struct MasterView: View {
                     .padding(.trailing, 30)
             }
             .frame(alignment: .topLeading)
-            
-            Text("Checklists")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity,maxHeight: 100, alignment: .topLeading)
-                .shadow(radius: 50)
-                .padding(.leading, 30)
-                .padding(.top,20)
-        
+           
+            NavigationView{
+                List{
+                    ForEach(Checklists, id: \.self){ Checklist in
+                        NavigationLink{
+                            
+                            ContentView(instc_checklist: Checklist)
+                        } label:{
+                        Text(Checklist.name)
+                        }
+                    }
+                }.navigationTitle("Checklists")
+            }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            .onAppear(perform: initiate)
+            
     }
 }
 
+var Start = MasterView()
+
 struct MasterView_Previews: PreviewProvider {
     static var previews: some View {
-        MasterView()
+        
+       Start
     }
 }
