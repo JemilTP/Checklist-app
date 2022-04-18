@@ -1,19 +1,31 @@
 
 { "checklists": [
     {
-    "id": 0,
+    "id": "efve",
     "name": "To-do list",
-    "items": ["wash car", "walk dog", "clean room"]
+    "items": {
+            "id": [0,1,2],
+            "itemNames": ["wash car", "walk dog", "clean room"],
+            "hasCompleted": [false, false, false]
+    }
     },
     {
-        "id": 1,
+        "id": "ferg",
         "name": "Fruits",
-        "items": ["apple", "orange", "pear"]
+        "items": {
+                "id": [0,1,2],
+                "itemNames" : ["apple", "orange", "pear"],
+                "hasCompleted": [false, false, false]
+        }
     },
     {
-        "id": 2,
+        "id": "asd",
         "name": "Goals",
-        "items": ["bench 100kg", "lose 5kg", "improve jumpshot", "learn French"]
+        "items": {
+            "id": [0,1,2],
+            "itemNames": ["bench 100kg", "lose 5kg", "improve jumpshot", "learn French"],
+            "hasCompleted": [false, false, false,false]
+        }
     }
     ]
 }

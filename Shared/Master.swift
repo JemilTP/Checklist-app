@@ -8,12 +8,21 @@
 import SwiftUI
 
 
-
-struct Checklist: Codable, Identifiable, Hashable{
-    var id : Int
+struct Checklist:   Codable, Identifiable{
+    var id = UUID().uuidString
     var name: String
-    var  items: [String]
+    var  items: Items
+    
+
 }
+
+struct Items: Codable, Equatable{
+    var id: [Int]
+    var itemNames: [String]
+    var hasCompleted: [Bool]
+   
+}
+
 struct JSONData: Codable{
     let checklists : [Checklist]
 }
@@ -26,10 +35,16 @@ func load() -> [Checklist]{
         if let jsondata = try? decoder.decode(JSONData.self, from: data){
             checklistArray = jsondata.checklists
             
-            
+            print("decoding")
         }
         }
+
+
+    
     print(checklistArray)
+    print()
+    print()
+    print()
     return checklistArray
     
        
@@ -46,14 +61,15 @@ struct MasterView: View {
                 Button("Edit"){}
                     .padding(.leading, 30)
                 Spacer()
-                Button("Done"){}
+                Button("Add"){}
                     .padding(.trailing, 30)
             }
             .frame(alignment: .topLeading)
+            
            
             NavigationView{
                 List{
-                    ForEach(Checklists, id: \.self){ Checklist in
+                    ForEach(Checklists){ Checklist in
                         NavigationLink{
                             
                             ContentView(instc_checklist: Checklist)
@@ -61,8 +77,9 @@ struct MasterView: View {
                         Text(Checklist.name)
                         }
                     }
-                }.navigationTitle("Checklists")
-            }
+                } .navigationTitle("Checklists")
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             
     }
