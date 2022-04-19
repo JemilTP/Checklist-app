@@ -7,7 +7,11 @@
 
 import SwiftUI
 
-
+struct isShowing{
+    
+    var showing: Bool = false
+    
+}
 struct ContentView: View {
     
     //var checklist:CheckList
@@ -45,6 +49,7 @@ struct ContentView: View {
                
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+         
             
     }
 }

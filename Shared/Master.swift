@@ -54,32 +54,50 @@ func load() -> [Checklist]{
 struct MasterView: View {
   
     @State private var Checklists : [Checklist] = load()
-  
+    @State var isShowlingChecklist: Bool = false
     var body: some View {
         VStack{
-            HStack{
-                Button("Edit"){}
-                    .padding(.leading, 30)
-                Spacer()
-                Button("Add"){}
-                    .padding(.trailing, 30)
+        /*    if isShowlingChecklist == false{
+                   HStack{
+                        Button("Edit"){}
+                            .padding(.leading, 30)
+                        Spacer()
+                        Button("Add"){}
+                            .padding(.trailing, 30)
+                    }
+                    .frame(alignment: .topLeading)
+                        
             }
-            .frame(alignment: .topLeading)
-            
+            */
            
-            NavigationView{
+           NavigationView{
+               VStack{
+               HStack{
+                    Button("Edit"){}
+                        .padding(.leading, 30)
+                    Spacer()
+                    Button("Add"){}
+                        .padding(.trailing, 30)
+               }.frame(alignment: .topLeading)
+               Text("Checklists")
                 List{
                     ForEach(Checklists){ Checklist in
                         NavigationLink{
                             
                             ContentView(instc_checklist: Checklist)
-                        } label:{
+                            
+                        }
+                    label:{
                         Text(Checklist.name)
+                           
+                        
                         }
                     }
                 } .navigationTitle("Checklists")
-            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            
+                .navigationBarHidden(true)
+           }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+              
+           }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             
     }
