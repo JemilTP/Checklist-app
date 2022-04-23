@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		CF798F19280F220C0083DD8B /* Edit_checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF798F18280F220C0083DD8B /* Edit_checklist.swift */; };
 		CF798F1A280F220C0083DD8B /* Edit_checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF798F18280F220C0083DD8B /* Edit_checklist.swift */; };
+		CF798F1C281183390083DD8B /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF798F1B281183390083DD8B /* SwiftUIView.swift */; };
+		CF798F1D281183390083DD8B /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF798F1B281183390083DD8B /* SwiftUIView.swift */; };
 		CFEA2C7D2806ACDE00F3D89F /* Tests_iOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C7C2806ACDE00F3D89F /* Tests_iOS.swift */; };
 		CFEA2C7F2806ACDE00F3D89F /* Tests_iOSLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C7E2806ACDE00F3D89F /* Tests_iOSLaunchTests.swift */; };
 		CFEA2C892806ACDF00F3D89F /* Tests_macOS.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFEA2C882806ACDF00F3D89F /* Tests_macOS.swift */; };
@@ -46,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		CF798F18280F220C0083DD8B /* Edit_checklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Edit_checklist.swift; sourceTree = "<group>"; };
+		CF798F1B281183390083DD8B /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		CFEA2C642806ACDC00F3D89F /* ChecklistApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistApp.swift; sourceTree = "<group>"; };
 		CFEA2C652806ACDC00F3D89F /* Master.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Master.swift; sourceTree = "<group>"; };
 		CFEA2C662806ACDE00F3D89F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 				CFEA2CA3280B282D00F3D89F /* data.swift */,
 				CFEA2CA8280B2E9400F3D89F /* checklist_data.json */,
 				CF798F18280F220C0083DD8B /* Edit_checklist.swift */,
+				CF798F1B281183390083DD8B /* SwiftUIView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -319,6 +323,7 @@
 			files = (
 				CFEA2CA1280B1F8E00F3D89F /* Detail.swift in Sources */,
 				CF798F19280F220C0083DD8B /* Edit_checklist.swift in Sources */,
+				CF798F1C281183390083DD8B /* SwiftUIView.swift in Sources */,
 				CFEA2C8E2806ACDF00F3D89F /* Master.swift in Sources */,
 				CFEA2C8C2806ACDF00F3D89F /* ChecklistApp.swift in Sources */,
 				CFEA2CA4280B282D00F3D89F /* data.swift in Sources */,
@@ -331,6 +336,7 @@
 			files = (
 				CFEA2CA2280B1F8E00F3D89F /* Detail.swift in Sources */,
 				CF798F1A280F220C0083DD8B /* Edit_checklist.swift in Sources */,
+				CF798F1D281183390083DD8B /* SwiftUIView.swift in Sources */,
 				CFEA2C8F2806ACDF00F3D89F /* Master.swift in Sources */,
 				CFEA2C8D2806ACDF00F3D89F /* ChecklistApp.swift in Sources */,
 				CFEA2CA5280B282D00F3D89F /* data.swift in Sources */,

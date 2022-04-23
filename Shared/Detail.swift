@@ -16,23 +16,32 @@ struct ContentView: View {
     
     //var checklist:CheckList
     @State var instc_checklist :  Checklist
-  
+    @State var all_checklists_ : [Checklist]
     var body: some View {
        
         VStack{
-            
-         
+            NavigationView{
+                VStack{
+                    NavigationLink{
+                        Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)
+                    }
+                label:{
+                    Text("Edit")
+                .frame(maxWidth: .infinity, alignment: .trailing)
+                .padding(.trailing, 30)
+                .foregroundColor(.blue)
+                }
             Text(self.instc_checklist.name)
                 
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .frame(maxWidth: .infinity, alignment: .topLeading)
-                .shadow(radius: 50)
+                .padding(.top, 10)
                 .padding(.leading, 30)
-                .padding(.bottom ,20)        
+                    
  
         
-            HStack{
+           
                 List(self.instc_checklist.items.id, id: \.self) {id in
                 HStack{
                     
@@ -47,9 +56,10 @@ struct ContentView: View {
                 
             }
                
-            }
+            
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-         
+            }
+        }.frame(maxWidth: .infinity, maxHeight: .infinity)
             
     }
 }
@@ -61,7 +71,7 @@ struct ContentView_Previews: PreviewProvider {
         )
         
         
-            ContentView(instc_checklist: temp)
+            ContentView(instc_checklist: temp, all_checklists_: [temp])
         
         
     }
