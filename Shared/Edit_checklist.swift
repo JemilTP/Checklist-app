@@ -25,6 +25,7 @@ struct Edit_checklist: View {
     @State var count: Int = 0
     @State var new_item: String = ""
     @State var reset_btn: Bool = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var body: some View {
       
     
@@ -56,13 +57,13 @@ struct Edit_checklist: View {
                 }
             }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        /*    .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true) */
+          .navigationBarBackButtonHidden(true)
+            
             .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing){
+                ToolbarItem(placement: .navigationBarLeading){
                    
                     Button("Done"){
-                         for CList in all_checklists{
+                        /* for CList in all_checklists{
                             // print(CList)
                             // print(count)
                              if CList.id == instc_checklist.id{
@@ -72,8 +73,10 @@ struct Edit_checklist: View {
                              }
                              count += 1
                          }
-                         writeToJson(Checklists: all_checklists)
+                         writeToJson(Checklists: all_checklists) */
+                        update_Checklist(to_update: all_checklists, instc_checklist: instc_checklist)
                         back.toggle()
+                        presentationMode.wrappedValue.dismiss()
                      }
                      .frame(maxWidth: .infinity, alignment: .trailing)
                      .padding(.trailing, 30)
@@ -87,7 +90,7 @@ struct Edit_checklist: View {
                 
             }
        
-
+        
     }
 }
 /*

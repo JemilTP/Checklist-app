@@ -49,37 +49,36 @@ struct ContentView: View {
     @State var instc_checklist :  Checklist
     @State var Edit: Bool = false
    
+    
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var body: some View {
        
         ZStack{
-            if Edit {
+        /*    if Edit {
                 Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)
-            }
+            } */
         if !Edit{
-                
                
                 VStack{
-               
        
                 List(self.instc_checklist.items.id, id: \.self) {id in
                 HStack{
                     
                     Button(self.instc_checklist.items.itemNames[id]){
                         self.instc_checklist.items.hasCompleted[id].toggle()
-                        print("toggled:  ")
-                        load(strt: false)
+                       // print("toggled:  ")
+                      //  load(strt: false)
                        
                             update_Checklist(to_update: all_checklists_, instc_checklist: self.instc_checklist)
                         
-                        load(strt: false)
-                        print("-----------")
+                     //   load(strt: false)
+                      //  print("-----------")
                     }
                     Spacer()
                     if self.instc_checklist.items.hasCompleted[id]{
                         Text("✓").foregroundColor(.blue)
                     }
                 }
-                
             } //.navigationBarHidden(true)
                
               /*     NavigationLink(destination:
@@ -89,19 +88,28 @@ struct ContentView: View {
                     */
 
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            
+                .onAppear{
+                    instc_checklist = return_instc_checklist(id: instc_checklist.id)
+                }
+               // .navigationBarHidden(Edit)
             .navigationBarTitle(self.instc_checklist.name)
             .toolbar{
                 ToolbarItem(placement: .navigationBarTrailing){
                     Button("Edit"){
+                   
                         self.Edit.toggle()
+                     
+                            
+                        
+                       // presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            .navigationBarHidden(Edit)
+           
+            
         }
         }
-    
+        NavigationLink(destination: Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist) , isActive: $Edit){}
     }
 }
 
