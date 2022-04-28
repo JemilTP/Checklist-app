@@ -36,7 +36,15 @@ struct Edit_checklist: View {
                 .padding(.leading, 30)
                 .padding(.bottom, 10)
                 .font(.largeTitle)
-            
+            if instc_checklist.items.itemNames.isEmpty{
+                List{
+                TextField("Add list item", text: $new_item).onSubmit{
+                    instc_checklist = add_item( instc_checklist: instc_checklist, item: new_item)
+                    new_item = ""
+                }
+            }
+            }
+            else{
             List(self.instc_checklist.items.id, id: \.self) {id in
             HStack{
                 
@@ -56,6 +64,7 @@ struct Edit_checklist: View {
                   
                 }
             }
+        }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
           .navigationBarBackButtonHidden(true)
             
@@ -63,17 +72,7 @@ struct Edit_checklist: View {
                 ToolbarItem(placement: .navigationBarLeading){
                    
                     Button("Done"){
-                        /* for CList in all_checklists{
-                            // print(CList)
-                            // print(count)
-                             if CList.id == instc_checklist.id{
-                                 all_checklists[count] = instc_checklist
-                                 print(all_checklists)
-                                 break
-                             }
-                             count += 1
-                         }
-                         writeToJson(Checklists: all_checklists) */
+                      
                         update_Checklist(to_update: all_checklists, instc_checklist: instc_checklist)
                         back.toggle()
                         presentationMode.wrappedValue.dismiss()

@@ -30,7 +30,7 @@ struct JSONData: Codable{
 }
 func load(strt: Bool) -> [Checklist]{
     var checklistArray: [Checklist] = []
-    if strt == true{
+   // if strt == true{
         if  let path = Bundle.main.path(forResource: "checklist_data", ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
            
@@ -44,7 +44,7 @@ func load(strt: Bool) -> [Checklist]{
                     
                 }
         }
-    }else{
+  /*  }else{
         
         if let  urls =  Bundle.main.path(forResource: "checklist_data", ofType: "json"){
         
@@ -64,7 +64,7 @@ func load(strt: Bool) -> [Checklist]{
             }
         }
         }
-    }
+    }*/
     
     print(checklistArray)
     print()
@@ -106,10 +106,41 @@ func writeToJson(Checklists: [Checklist]){
         print("Got \(error)")
       }
 }
+
+func newChecklist(all_checklists: [Checklist]) -> Checklist{
+    var id_list: [String] = []
+    for id in all_checklists{
+        id_list.append(id.id)
+    }
+    
+    var new_id = ""
+    
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"    
+   
+    while id_list.contains(new_id) || new_id == ""{
+        new_id = ""
+        for _ in 0 ..< 10{
+            new_id.append(letters.randomElement()!)
+        }
+    }
+    print(new_id)
+    let items = Items(
+        id: [],
+        itemNames: [],
+        hasCompleted: []
+    )
+let new_Checklist =  Checklist(
+    id : new_id,
+    name: "New Checklist",
+    items: items
+    
+)
+    return new_Checklist
+}
 struct MasterView: View {
   
-    @State private var Checklists : [Checklist] = load(strt: true)
-    @State var isShowlingChecklist: Bool = false
+    @State private var Checklists : [Checklist] = []
+  @State var isShowlingChecklist: Bool = false
     @State var toList: Bool = false
     @State var instc_checklist = load(strt: false)[0]
     @State var Edit_Main: Bool = false
@@ -120,22 +151,7 @@ struct MasterView: View {
            NavigationView{
               
                VStack{
-             /*  HStack{
-                    Button("Edit"){}
-                        .padding(.leading, 30)
-                    Spacer()
-                    Button("Add"){}
-                        .padding(.trailing, 30)
-               } */
-                   
-                   
-              /* Text("Checklists")
-                       .font(.largeTitle)
-                       .fontWeight(.bold)
-                       .frame(maxWidth: .infinity, alignment: .topLeading)
-                       .padding(.leading, 30)
-                       .padding(.top, 10)
-                      */
+    
                 List{
                     ForEach(Checklists){ Checklist in
                       
@@ -143,14 +159,11 @@ struct MasterView: View {
                             instc_checklist = return_instc_checklist(id: Checklist.id)
                             toList.toggle()
                         }
-                  /*  label:{
-                        Text(Checklist.name)
-                        
-                    }*/
+              
                    
                     }
                 }
-               //.navigationBarBackButtonHidden(true)
+             
                
                 
                    NavigationLink(
@@ -160,10 +173,16 @@ struct MasterView: View {
                                   isActive: $toList
                    ){ }
            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                   .onAppear{
+                       Checklists = load(strt: true)
+                   }
                    .navigationTitle("Checklists")
                    .toolbar{
                        ToolbarItem(placement: .navigationBarTrailing){
-                      Button("Add"){}
+                      Button("Add"){
+                          Checklists.append(newChecklist(all_checklists: Checklists))
+                          writeToJson(Checklists: Checklists)
+                      }
                        }
                        
                        ToolbarItem(placement: .navigationBarLeading){
