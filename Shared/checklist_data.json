@@ -6,7 +6,7 @@
     "items": {
             "id": [0,1,2],
             "itemNames": ["wash car", "walk dog", "clean room"],
-            "hasCompleted": [false, false, false]
+            "hasCompleted": [true, false, false]
     }
     },
     {
@@ -22,7 +22,7 @@
         "id": "asd",
         "name": "Goals",
         "items": {
-            "id": [0,1,2],
+            "id": [0,1,2,3],
             "itemNames": ["bench 100kg", "lose 5kg", "improve jumpshot", "learn French"],
             "hasCompleted": [false, false, false,false]
         }

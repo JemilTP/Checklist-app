@@ -7,30 +7,30 @@
 
 import SwiftUI
 
+func add_item( instc_checklist: Checklist, item: String) -> Checklist {
+    var updated = instc_checklist
+    
+    updated.items.id.append(updated.items.id.count)
+    updated.items.itemNames.append(item)
+    updated.items.hasCompleted.append(false)
+   
+    return (updated)
+}
+
 struct Edit_checklist: View {
     @State var instc_checklist: Checklist
     @State var all_checklists: [Checklist]
     @State var original: Checklist
-   
+    @State var back: Bool = false
     @State var count: Int = 0
-    
+    @State var new_item: String = ""
+    @State var reset_btn: Bool = false
     var body: some View {
       
     
         VStack{
-            Button("Done"){
-                for CList in all_checklists{
-                   // print(CList)
-                   // print(count)
-                    if CList.id == instc_checklist.id{
-                        all_checklists[count] = instc_checklist
-                        print(all_checklists)
-                        break
-                    }
-                    count += 1
-                }
-                writeToJson(Checklists: all_checklists)
-            }
+         
+            
             TextField("Checklist name", text:  $instc_checklist.name)
                 .padding(.leading, 30)
                 .padding(.bottom, 10)
@@ -45,11 +45,49 @@ struct Edit_checklist: View {
                     Text("✓").foregroundColor(.blue)
                 }
             }
-           
-        }
-        
+                if id == instc_checklist.items.itemNames.count - 1{
+                    HStack{
+                        TextField("Add list item", text: $new_item).onSubmit{
+                            instc_checklist = add_item( instc_checklist: instc_checklist, item: new_item)
+                            new_item = ""
+                        }
+                    }
+                  
+                }
+            }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-          
+        /*    .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true) */
+            .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing){
+                   
+                    Button("Done"){
+                         for CList in all_checklists{
+                            // print(CList)
+                            // print(count)
+                             if CList.id == instc_checklist.id{
+                                 all_checklists[count] = instc_checklist
+                                 print(all_checklists)
+                                 break
+                             }
+                             count += 1
+                         }
+                         writeToJson(Checklists: all_checklists)
+                        back.toggle()
+                     }
+                     .frame(maxWidth: .infinity, alignment: .trailing)
+                     .padding(.trailing, 30)
+                     
+                };
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button("Reset"){
+                        instc_checklist = original
+                    }
+                }
+                
+            }
+       
+
     }
 }
 /*
