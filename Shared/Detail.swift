@@ -7,80 +7,112 @@
 
 import SwiftUI
 
+struct isShowing{
+    
+    var showing: Bool = false
+    
+}
+
+func update_Checklist(to_update: [Checklist], instc_checklist: Checklist){
+    var count: Int = 0
+    var Checklists:[Checklist] = to_update
+    for C in Checklists{
+        if C.id == instc_checklist.id{
+            Checklists[count] = instc_checklist
+            break
+        }
+        count += 1
+        
+    }
+    print("Updated")
+    
+    writeToJson(Checklists: Checklists)
+}
+
+func return_instc_checklist( id: String) -> Checklist{
+    print("initialising list")
+    let all_checklists = load(strt: false)
+    var ret: Checklist = all_checklists[0]
+    for c in all_checklists{
+        if c.id == id{
+            ret = c
+            break
+        }
+    }
+  return ret
+}
 
 struct ContentView: View {
+     
     
-    //var checklist:CheckList
-    @State private var Checklists : [Checklist] = []
-    
-    func initiate(){
-        self.Checklists = load()
-        print(self.Checklists)
-    }
-    
+    @State var all_checklists_ : [Checklist] = load(strt: false)
+    @State var instc_checklist :  Checklist
+    @State var Edit: Bool = false
+   
     var body: some View {
        
-        VStack{
-            
-            HStack{
-                Button("Edit"){}
-                    .padding(.leading, 30)
-                    
-                Spacer()
-                Button("Done"){}
-                    .padding(.trailing, 30)
+        ZStack{
+            if Edit {
+                Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)
             }
-            .frame(alignment: .topLeading)
-            
-            Text("To-Do list")
+        if !Edit{
                 
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .frame(maxWidth: .infinity,maxHeight: 100, alignment: .topLeading)
-                .shadow(radius: 50)
-                .padding(.leading, 30)
-                .padding(.top,20)
-            
-                HStack {
+               
+                VStack{
+               
+       
+                List(self.instc_checklist.items.id, id: \.self) {id in
+                HStack{
                     
-                    VStack(alignment: .leading){
-                
-                
-                    Text("Clean room")
-                            .padding(.leading, 30) .padding(.bottom,10)
-                        
-                        
-                    Text("Buy groceries")
-                        .padding(.leading, 30) .padding(.bottom,10)
-                        
-                    Text("Clean car")
-                        .padding(.leading, 30) .padding(.bottom,10)
-                        
-                    Text("Call Mum")
-                        .padding(.leading, 30) .padding(.bottom,10)
+                    Button(self.instc_checklist.items.itemNames[id]){
+                        self.instc_checklist.items.hasCompleted[id].toggle()
+                        print("toggled:  ")
+                        load(strt: false)
                        
-                }
-                  Spacer(minLength: 50)
-                    
-                    VStack{
-                      //  Button("Done"){} .padding(.bottom, 10)
-                        Button("Done"){}.padding(.bottom, 10).padding(.trailing, 30)
-                       // Button("Done"){}.padding(.bottom, 10)
-                        Button("Done"){}.padding(.bottom, 10).padding(.trailing, 30)
+                            update_Checklist(to_update: all_checklists_, instc_checklist: self.instc_checklist)
+                        
+                        load(strt: false)
+                        print("-----------")
+                    }
+                    Spacer()
+                    if self.instc_checklist.items.hasCompleted[id]{
+                        Text("✓").foregroundColor(.blue)
                     }
                 }
-                .frame(minWidth: 0,  maxWidth: .infinity)
-            
+                
+            } //.navigationBarHidden(true)
+               
+              /*     NavigationLink(destination:
+                         Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)//.navigationBarBackButtonHidden(true)
+                                   ,isActive: $Edit
+                   ){}
+                    */
+
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             
+            .navigationBarTitle(self.instc_checklist.name)
+            .toolbar{
+                ToolbarItem(placement: .navigationBarTrailing){
+                    Button("Edit"){
+                        self.Edit.toggle()
+                    }
+                }
+            }
+            .navigationBarHidden(Edit)
+        }
+        }
+    
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let temp = load(strt: true)
         
-            ContentView()
-            
+        
+            ContentView(all_checklists_: temp,instc_checklist: temp[0] )
+        
         
     }
 }
+
