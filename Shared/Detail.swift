@@ -109,7 +109,7 @@ struct ContentView: View {
             
         }
         }
-        NavigationLink(destination: Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist) , isActive: $Edit){}
+        NavigationLink(destination: Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist, checklist_copy: instc_checklist) , isActive: $Edit){}
     }
 }
 
