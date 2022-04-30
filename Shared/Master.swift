@@ -65,7 +65,7 @@ func load(strt: Bool) -> [Checklist]{
         }
         }
     }*/
-    
+    //sdd
     print(checklistArray)
     print()
     print()
