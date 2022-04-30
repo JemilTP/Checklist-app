@@ -30,7 +30,7 @@ struct JSONData: Codable{
 }
 func load(strt: Bool) -> [Checklist]{
     var checklistArray: [Checklist] = []
-    if strt == true{
+   // if strt == true{
         if  let path = Bundle.main.path(forResource: "checklist_data", ofType: "json"),
             let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
            
@@ -44,7 +44,7 @@ func load(strt: Bool) -> [Checklist]{
                     
                 }
         }
-    }else{
+  /*  }else{
         
         if let  urls =  Bundle.main.path(forResource: "checklist_data", ofType: "json"){
         
@@ -64,8 +64,8 @@ func load(strt: Bool) -> [Checklist]{
             }
         }
         }
-    }
-    
+    }*/
+    //sdd
     print(checklistArray)
     print()
     print()
@@ -106,10 +106,57 @@ func writeToJson(Checklists: [Checklist]){
         print("Got \(error)")
       }
 }
+
+func newChecklist(all_checklists: [Checklist]) -> Checklist{
+    var id_list: [String] = []
+    for id in all_checklists{
+        id_list.append(id.id)
+    }
+    
+    var new_id = ""
+    
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"    
+   
+    while id_list.contains(new_id) || new_id == ""{
+        new_id = ""
+        for _ in 0 ..< 10{
+            new_id.append(letters.randomElement()!)
+        }
+    }
+    print(new_id)
+    let items = Items(
+        id: [],
+        itemNames: [],
+        hasCompleted: []
+    )
+let new_Checklist =  Checklist(
+    id : new_id,
+    name: "New Checklist",
+    items: items
+    
+)
+    return new_Checklist
+}
+
+func delete_checklist(all_checklists: [Checklist], id: String) -> [Checklist]{
+    
+    var ret  = all_checklists
+    var count: Int = 0
+    for _ in ret{
+        if ret[count].id == id{
+            ret.remove(at: count)
+            break
+        }
+        count += 1
+    }
+    return ret
+}
+
 struct MasterView: View {
   
-    @State private var Checklists : [Checklist] = load(strt: true)
-    @State var isShowlingChecklist: Bool = false
+    @State private var Checklists : [Checklist] = []
+    @State private var Copy_Checklists : [Checklist] = []
+  @State var isShowlingChecklist: Bool = false
     @State var toList: Bool = false
     @State var instc_checklist = load(strt: false)[0]
     @State var Edit_Main: Bool = false
@@ -120,39 +167,32 @@ struct MasterView: View {
            NavigationView{
               
                VStack{
-             /*  HStack{
-                    Button("Edit"){}
-                        .padding(.leading, 30)
-                    Spacer()
-                    Button("Add"){}
-                        .padding(.trailing, 30)
-               } */
-                   
-                   
-              /* Text("Checklists")
-                       .font(.largeTitle)
-                       .fontWeight(.bold)
-                       .frame(maxWidth: .infinity, alignment: .topLeading)
-                       .padding(.leading, 30)
-                       .padding(.top, 10)
-                      */
+    
                 List{
                     ForEach(Checklists){ Checklist in
-                      
-                        Button(Checklist.name){
-                            instc_checklist = return_instc_checklist(id: Checklist.id)
-                            toList.toggle()
-                        }
-                  /*  label:{
-                        Text(Checklist.name)
+                        HStack{
+                            if Edit_Main{
+                                Button{
+                                    Checklists = delete_checklist(all_checklists: Checklists, id: Checklist.id)
+                                    writeToJson(Checklists: Checklists)
+                                } label: {
+                                Image(systemName: "trash").foregroundColor(.red)
+                                }
+                            }
+                                Button(Checklist.name){
+                                    if !Edit_Main{
+                                    instc_checklist = return_instc_checklist(id: Checklist.id)
+                                    toList.toggle()
+                                    }
+                                }
+                            }
                         
-                    }*/
                    
-                    }
+                    
                 }
-               //.navigationBarBackButtonHidden(true)
+             
                
-                
+                }
                    NavigationLink(
                                   destination: ContentView(instc_checklist: instc_checklist)
                                     // .navigationBarBackButtonHidden(true)
@@ -160,15 +200,28 @@ struct MasterView: View {
                                   isActive: $toList
                    ){ }
            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                   .onAppear{
+                       Checklists = load(strt: true)
+                       Copy_Checklists = load(strt: true)
+                   }
                    .navigationTitle("Checklists")
                    .toolbar{
                        ToolbarItem(placement: .navigationBarTrailing){
-                      Button("Add"){}
+                           if !Edit_Main{
+                                  Button("Add"){
+                                      Checklists.append(newChecklist(all_checklists: Checklists))
+                                      writeToJson(Checklists: Checklists)
+                                  }
+                           }else{
+                               Button("Done"){
+                                   Edit_Main = false
+                               }
+                           }
                        }
                        
                        ToolbarItem(placement: .navigationBarLeading){
                            Button("Edit"){
-                               
+                               Edit_Main = true
                            }
                        }
                    }
