@@ -122,12 +122,24 @@ func delete_checklist(all_checklists: [Checklist], id: String) -> [Checklist]{
 struct MasterView: View {
   
     @State private var Checklists : [Checklist] = []
-    @State private var Copy_Checklists : [Checklist] = []
-  @State var isShowlingChecklist: Bool = false
+  //  @State private var Copy_Checklists : [Checklist] = []
+ // @State var isShowlingChecklist: Bool = false
     @State var toList: Bool = false
     @State var instc_checklist = load(strt: false)[0]
-    @State var Edit_Main: Bool = false
-    @State var Add_Checklist: Bool = false
+   // @State var Edit_Main: Bool = false
+  //  @State var Add_Checklist: Bool = false
+    
+    @State var mode: EditMode = .inactive
+    
+    func delete(at offsets: IndexSet){
+        Checklists.remove(atOffsets: offsets)
+        writeToJson(Checklists: Checklists)
+    }
+    
+    func move(from source: IndexSet, to destination: Int){
+        Checklists.move(fromOffsets: source, toOffset: destination)
+        writeToJson(Checklists: Checklists)
+    }
     var body: some View {
         VStack{
            
@@ -138,28 +150,34 @@ struct MasterView: View {
                 List{
                     ForEach(Checklists){ Checklist in
                         HStack{
-                            if Edit_Main{
-                                Button{
-                                    Checklists = delete_checklist(all_checklists: Checklists, id: Checklist.id)
-                                    writeToJson(Checklists: Checklists)
-                                } label: {
-                                Image(systemName: "trash").foregroundColor(.red)
-                                }
+                            
+                            Button {
+                                instc_checklist = return_instc_checklist(id: Checklist.id)
+                                toList.toggle()
+                            }label:{
+                                Text(Checklist.name).foregroundColor(.black)
                             }
-                                Button(Checklist.name){
-                                    if !Edit_Main{
-                                    instc_checklist = return_instc_checklist(id: Checklist.id)
-                                    toList.toggle()
-                                    }
-                                }
-                            }
+                            }.environment(\.editMode, $mode)
                         
                    
                     
-                }
+                    }.onMove(perform: move)
+                        .onDelete(perform: delete)
              
                
+                }.toolbar{
+                    ToolbarItem(placement: .navigationBarTrailing){
+                        Button("Add"){
+                            Checklists.append(newChecklist(all_checklists: Checklists))
+                            writeToJson(Checklists: Checklists)
+                        }
+                    }
+                    ToolbarItem(placement: .navigationBarLeading){
+                        
+                        EditButton()
+                    }
                 }
+                   
                    NavigationLink(
                     destination: ContentView(instc_checklist: instc_checklist, original: instc_checklist, copy: instc_checklist)
                                     // .navigationBarBackButtonHidden(true)
@@ -169,29 +187,10 @@ struct MasterView: View {
            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                    .onAppear{
                        Checklists = load(strt: true)
-                       Copy_Checklists = load(strt: true)
+                           // Copy_Checklists = load(strt: true)
                    }
                    .navigationTitle("Checklists")
-                   .toolbar{
-                       ToolbarItem(placement: .navigationBarTrailing){
-                           if !Edit_Main{
-                                  Button("Add"){
-                                      Checklists.append(newChecklist(all_checklists: Checklists))
-                                      writeToJson(Checklists: Checklists)
-                                  }
-                           }else{
-                               Button("Done"){
-                                   Edit_Main = false
-                               }
-                           }
-                       }
-                       
-                       ToolbarItem(placement: .navigationBarLeading){
-                           Button("Edit"){
-                               Edit_Main = true
-                           }
-                       }
-                   }
+                 
            }
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
             
