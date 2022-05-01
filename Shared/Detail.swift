@@ -47,72 +47,128 @@ struct ContentView: View {
     
     @State var all_checklists_ : [Checklist] = load(strt: false)
     @State var instc_checklist :  Checklist
+    @State var original: Checklist
+    @State var copy: Checklist
     @State var Edit: Bool = false
-   
-    
+    @State var mode: EditMode = .inactive
+    @State var reset: Bool = false
+    @State var new_item: String = ""
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    func delete(at offsets: IndexSet) {
+       
+        instc_checklist.items.itemNames.remove(atOffsets: offsets)
+        instc_checklist.items.hasCompleted.remove(atOffsets: offsets)
+        instc_checklist.items.id.remove(atOffsets: offsets)
+        var c: Int = 0
+        for _ in instc_checklist.items.id{
+            instc_checklist.items.id[c] = c
+            c += 1
+        }
+        
+        update_Checklist(to_update: all_checklists_, instc_checklist: instc_checklist)
+        print(instc_checklist)
+       }
+    
+    func move(from source: IndexSet, to destination: Int) {
+        instc_checklist.items.itemNames.move(fromOffsets: source, toOffset: destination)
+        instc_checklist.items.hasCompleted.move(fromOffsets: source, toOffset: destination)
+        
+        update_Checklist(to_update: all_checklists_, instc_checklist: instc_checklist)
+    }
+    
     var body: some View {
        
-        ZStack{
-        /*    if Edit {
-                Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)
-            } */
-        if !Edit{
-               
                 VStack{
-       
-                List(self.instc_checklist.items.id, id: \.self) {id in
-                HStack{
-                    
-                    Button(self.instc_checklist.items.itemNames[id]){
-                        self.instc_checklist.items.hasCompleted[id].toggle()
-                       // print("toggled:  ")
-                      //  load(strt: false)
-                       
-                            update_Checklist(to_update: all_checklists_, instc_checklist: self.instc_checklist)
-                        
-                     //   load(strt: false)
-                      //  print("-----------")
-                    }
-                    Spacer()
-                    if self.instc_checklist.items.hasCompleted[id]{
-                        Text("✓").foregroundColor(.blue)
-                    }
-                }
-            } //.navigationBarHidden(true)
-               
-              /*     NavigationLink(destination:
-                         Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist)//.navigationBarBackButtonHidden(true)
-                                   ,isActive: $Edit
-                   ){}
-                    */
-
-        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .onAppear{
-                    instc_checklist = return_instc_checklist(id: instc_checklist.id)
-                }
-               // .navigationBarHidden(Edit)
-            .navigationBarTitle(self.instc_checklist.name)
-            .toolbar{
-                ToolbarItem(placement: .navigationBarTrailing){
-                    Button("Edit"){
-                   
-                        self.Edit.toggle()
+                    HStack{
                      
+                        if mode == .inactive{
+                            Text(instc_checklist.name).font(.largeTitle)
+                                .padding(.leading).onAppear{
+                            
+                            update_Checklist(to_update: all_checklists_, instc_checklist: instc_checklist)
+                                }
+                        }else{
+                            TextField("", text: $instc_checklist.name)
+                                .font(.largeTitle)
+                             
+                                .padding(.leading)
+                                
+                        }
+                        Spacer()
+                    }.frame(maxWidth: .infinity)
+                    List{
+                        
+                        ForEach(self.instc_checklist.items.id, id: \.self) {id in
+                                HStack{
+                                   // if id <= instc_checklist.items.id.count - 1{
+                                    if mode == .inactive{
+                                            Button(self.instc_checklist.items.itemNames[id]){
+                                                self.instc_checklist.items.hasCompleted[id].toggle()
+                                             
+                                                    update_Checklist(to_update: all_checklists_, instc_checklist: self.instc_checklist)
+                                       
+                                            }
+                                    }else{
+                                        
+                                        TextField("", text: $instc_checklist.items.itemNames[id])
+                                        
+                                    }
+                                    
+                                        Spacer()
+                                        if self.instc_checklist.items.hasCompleted[id]{
+                                            Text("✓").foregroundColor(.blue)
+                                        }
+                                   // }
+                                }
+                        }.onDelete(perform: delete)
+                            .onMove(perform: move)
                             
                         
-                       // presentationMode.wrappedValue.dismiss()
-                    }
-                }
-            }
+                       
+                        if mode == .active{
+                            HStack{
+                                TextField("Add list item", text: $new_item).onSubmit{
+                                    instc_checklist = add_item( instc_checklist: instc_checklist, item: new_item)
+                                    new_item = ""
+                                }
+                            }
+                        }
+                    }.toolbar{
+                        
+                        ToolbarItem(placement: .navigationBarTrailing){
+                            if mode == .active{
+                                
+                                if !reset{
+                                    Button("Reset"){
+                                        copy = instc_checklist
+                                        instc_checklist = original
+                                        reset = true
+                                    }.foregroundColor(.red)
+                                }else{
+                                    Button("Undo"){
+                                        instc_checklist = copy
+                                        reset = false
+                                    }.foregroundColor(.green)
+                                }
+                            }
+                            }
+                        ToolbarItem(placement: .navigationBarTrailing){
+                            
+                            EditButton()
+                        }
+                    }.environment(\.editMode, $mode)
+
+        }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .navigationBarTitle("", displayMode: .inline)
            
             
-        }
-        }
+       
+        
         NavigationLink(destination: Edit_checklist(instc_checklist: instc_checklist, all_checklists: all_checklists_, original: instc_checklist, checklist_copy: instc_checklist) , isActive: $Edit){}
     }
 }
-
+/*
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         let temp = load(strt: true)
@@ -124,3 +180,4 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
+*/

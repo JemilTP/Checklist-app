@@ -44,33 +44,7 @@ func load(strt: Bool) -> [Checklist]{
                     
                 }
         }
-  /*  }else{
-        
-        if let  urls =  Bundle.main.path(forResource: "checklist_data", ofType: "json"){
-        
-        //let documentFolderURL = urls.first!
-     //   let fileURL = documentFolderURL.appendingPathComponent("checklist_data.json")
-        let fileURL = URL(fileURLWithPath: urls)
-        
-        print("started: ", fileURL)
-        if let data = try? Data(contentsOf: fileURL){
-            let decoder = JSONDecoder()
-            print("did not decode")
-            print(String(data: data,encoding: .utf8)!)
-            if let jsondata = try? decoder.decode(JSONData.self, from: data){
-                checklistArray = jsondata.checklists
-                print("actually decoded")
-                
-            }
-        }
-        }
-    }*/
-    //sdd
-    print(checklistArray)
-    print()
-    print()
-    print()
-    print()
+
     
     return checklistArray
     
@@ -83,10 +57,6 @@ func writeToJson(Checklists: [Checklist]){
     if let  url =  Bundle.main.path(forResource: "checklist_data", ofType: "json"){
         let fileURL = URL(fileURLWithPath: url)
         
-   // let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        
-  //  let documentFolderURL = urls.first!
-   // let fileURL = documentFolderURL.appendingPathComponent("checklist_data.json")
     print("writing to: ", fileURL)
     let json = JSONEncoder()
     let data = try json.encode(Checklists)
@@ -94,10 +64,7 @@ func writeToJson(Checklists: [Checklist]){
      
     let data_ = "{ \"checklists\": " + String(data: data,encoding: .utf8)! + "}"
         print(data_)
-      //  print("correct:", data_)
-   
-       // print(urls)
-       // print(type(of: data))
+     
        try  "".write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
         try data_.write(to: fileURL ,atomically: true, encoding: String.Encoding.utf8)
     }
@@ -194,7 +161,7 @@ struct MasterView: View {
                
                 }
                    NavigationLink(
-                                  destination: ContentView(instc_checklist: instc_checklist)
+                    destination: ContentView(instc_checklist: instc_checklist, original: instc_checklist, copy: instc_checklist)
                                     // .navigationBarBackButtonHidden(true)
                                   ,
                                   isActive: $toList
