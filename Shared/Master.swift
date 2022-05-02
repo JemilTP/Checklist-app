@@ -31,21 +31,22 @@ struct JSONData: Codable{
 func load(strt: Bool) -> [Checklist]{
     var checklistArray: [Checklist] = []
    // if strt == true{
-        if  let path = Bundle.main.path(forResource: "checklist_data", ofType: "json"),
-            let data = try? Data(contentsOf: URL(fileURLWithPath: path)) {
-           
-               
-                print("start: ", URL(fileURLWithPath: path))
-                let decoder = JSONDecoder()
-            print(String(data: data,encoding: .utf8)!)
-                if let jsondata = try? decoder.decode(JSONData.self, from: data){
-                    checklistArray = jsondata.checklists
-                    
-                    
-                }
-        }
+        let path = Bundle.main.url(forResource: "checklist_data", withExtension: "json")!
+        
+            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let jsonURL = documentDirectory
+        .appendingPathComponent("checklist_data")
+        .appendingPathExtension("json")
+    print(jsonURL.path)
+    if !FileManager.default.fileExists(atPath: jsonURL.path){
+        try? FileManager.default.copyItem(at: path, to: jsonURL)
+        
+    }
 
-    
+
+    if let jsondata = try? JSONDecoder().decode(JSONData.self, from: Data(contentsOf: jsonURL)){
+        checklistArray = jsondata.checklists
+    }
     return checklistArray
     
        
@@ -53,25 +54,21 @@ func load(strt: Bool) -> [Checklist]{
 }
 
 func writeToJson(Checklists: [Checklist]){
-    do{
-    if let  url =  Bundle.main.path(forResource: "checklist_data", ofType: "json"){
-        let fileURL = URL(fileURLWithPath: url)
+
+    do {
+      let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+      let documentFolderURL = urls.first!
+      let fileURL = documentFolderURL.appendingPathComponent("checklist_data.json")
+      let json = JSONEncoder()
+      let data = try json.encode(Checklists)
+        let data_ = "{ \"checklists\": " + String(data: data,encoding: .utf8)! + "}"
+            print(data_)
         
-    print("writing to: ", fileURL)
-    let json = JSONEncoder()
-    let data = try json.encode(Checklists)
-        print(data)
-     
-    let data_ = "{ \"checklists\": " + String(data: data,encoding: .utf8)! + "}"
-        print(data_)
-     
-       try  "".write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
-        try data_.write(to: fileURL ,atomically: true, encoding: String.Encoding.utf8)
+        try data_.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
+        
+    } catch {
+      print("Got \(error)")
     }
-    
-    }catch {
-        print("Got \(error)")
-      }
 }
 
 func newChecklist(all_checklists: [Checklist]) -> Checklist{
