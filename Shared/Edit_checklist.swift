@@ -3,19 +3,11 @@
 //  Checklist
 //
 //  Created by Jemil Pepena on 20/4/2022.
-//
-
+///*
+/*
 import SwiftUI
 
-func add_item( instc_checklist: Checklist, item: String) -> Checklist {
-    var updated = instc_checklist
-    
-    updated.items.id.append(updated.items.id.count)
-    updated.items.itemNames.append(item)
-    updated.items.hasCompleted.append(false)
-   
-    return updated
-}
+
 
 func delete_item(instc_checklist: Checklist, id: Int) -> Checklist{
     var ret = instc_checklist
@@ -33,6 +25,7 @@ func delete_item(instc_checklist: Checklist, id: Int) -> Checklist{
     return ret
 }
 
+
 struct Edit_checklist: View {
     @State var instc_checklist: Checklist
     @State var all_checklists: [Checklist]
@@ -43,6 +36,12 @@ struct Edit_checklist: View {
     @State var new_item: String = ""
     @State var reset_btn: Bool = false
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
+    
+    func move(from source: IndexSet, to destination: Int){
+        instc_checklist.items.id.move(fromOffsets: source, toOffset: destination)
+    /*    instc_checklist.items.hasCompleted.move(fromOffsets: source, toOffset: destination) */
+    }
+    
     var body: some View {
       
     
@@ -53,16 +52,9 @@ struct Edit_checklist: View {
                 .padding(.leading, 30)
                 .padding(.bottom, 10)
                 .font(.largeTitle)
-            if instc_checklist.items.itemNames.isEmpty{
+            
                 List{
-                TextField("Add list item", text: $new_item).onSubmit{
-                    instc_checklist = add_item( instc_checklist: instc_checklist, item: new_item)
-                    new_item = ""
-                }
-            }
-            }
-            else{
-            List(self.instc_checklist.items.id, id: \.self) {id in
+                ForEach(self.instc_checklist.items.id, id: \.self) {id in
             HStack{
                 Button{
                     
@@ -77,7 +69,8 @@ struct Edit_checklist: View {
                     Text("✓").foregroundColor(.blue)
                 }
             }
-                if id == instc_checklist.items.itemNames.count - 1{
+                }.onMove(perform: move)
+               
                     HStack{
                         TextField("Add list item", text: $new_item).onSubmit{
                             instc_checklist = add_item( instc_checklist: instc_checklist, item: new_item)
@@ -85,8 +78,7 @@ struct Edit_checklist: View {
                         }
                     }
                   
-                }
-            }
+           
         }
         }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
           .navigationBarBackButtonHidden(true)
@@ -138,4 +130,5 @@ struct Edit_checklist_Previews: PreviewProvider {
         Edit_checklist()
     }
 }
+*/
 */
