@@ -7,154 +7,104 @@
 import Foundation
 import SwiftUI
 
-
-struct Checklist:   Codable, Identifiable{
-    var id : String
-    var name: String
-    var  items: Items
-
-
-}
-
-struct Items: Codable, Equatable{
-    var id: [Int]
-    var itemNames: [String]
-    var hasCompleted: [Bool]
-   
-   
-   
-}
-
-struct JSONData: Codable{
-    let checklists : [Checklist]
-}
-func load(strt: Bool) -> [Checklist]{
-    var checklistArray: [Checklist] = []
-   // if strt == true{
-        let path = Bundle.main.url(forResource: "checklist_data", withExtension: "json")!
-        
-            let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let jsonURL = documentDirectory
-        .appendingPathComponent("checklist_data")
-        .appendingPathExtension("json")
-    print(jsonURL.path)
-    if !FileManager.default.fileExists(atPath: jsonURL.path){
-        try? FileManager.default.copyItem(at: path, to: jsonURL)
-        
-    }
-
-
-    if let jsondata = try? JSONDecoder().decode(JSONData.self, from: Data(contentsOf: jsonURL)){
-        checklistArray = jsondata.checklists
-    }
-    return checklistArray
-    
-       
-    
-}
-
-func writeToJson(Checklists: [Checklist]){
-
-    do {
-      let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-      let documentFolderURL = urls.first!
-      let fileURL = documentFolderURL.appendingPathComponent("checklist_data.json")
-      let json = JSONEncoder()
-      let data = try json.encode(Checklists)
-        let data_ = "{ \"checklists\": " + String(data: data,encoding: .utf8)! + "}"
-            print(data_)
-        
-        try data_.write(to: fileURL, atomically: true, encoding: String.Encoding.utf8)
-        
-    } catch {
-      print("Got \(error)")
-    }
-}
-
+/**
+ Creates a new checklist
+ Take the array of checklists as input
+ appends a new empty checklists at the end
+ returns the new array with the new checklist
+ 
+ note: does not write to json, return value will need to be given to write to json function
+ - Parameter all_checklists: array of all checklists
+ - Returns: new array of all checklists
+ */
 func newChecklist(all_checklists: [Checklist]) -> Checklist{
-    var id_list: [String] = []
-    for id in all_checklists{
+    var id_list: [String] = [] // lists of all checklists ids
+    for id in all_checklists{ // populates with ids of all checklists
         id_list.append(id.id)
     }
     
-    var new_id = ""
+    var new_id = "" //new id for new checklist
     
-    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"    
+    let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"    // used to generate new id
    
-    while id_list.contains(new_id) || new_id == ""{
+    while id_list.contains(new_id) || new_id == ""{ //loop while newly generted id doesnt already exist or is emtpy
         new_id = ""
-        for _ in 0 ..< 10{
+        for _ in 0 ..< 10{ //creates new id
             new_id.append(letters.randomElement()!)
         }
     }
-    print(new_id)
-    let items = Items(
+  
+    let items = Items( //cretes new empty item struct
         id: [],
         itemNames: [],
         hasCompleted: []
     )
-let new_Checklist =  Checklist(
+let new_Checklist =  Checklist( //new emtpy checklist with the generated id from aboe
     id : new_id,
     name: "New Checklist",
     items: items
     
 )
-    return new_Checklist
+    return new_Checklist //returns new checklist to be appended to array of checklists
 }
 
-func delete_checklist(all_checklists: [Checklist], id: String) -> [Checklist]{
+/**Our master view struct
+ Holds the navigation view of checklists
+ Holds the edit mode to remove checklists
+ Can add new checklists, using newChecklist
+ 
+ */
+struct MasterView: View { //our master view
     
-    var ret  = all_checklists
-    var count: Int = 0
-    for _ in ret{
-        if ret[count].id == id{
-            ret.remove(at: count)
-            break
-        }
-        count += 1
-    }
-    return ret
-}
-
-struct MasterView: View {
-  
+    ///Main array of checklists that holds all checklists in Masterview
     @State private var Checklists : [Checklist] = []
-  //  @State private var Copy_Checklists : [Checklist] = []
- // @State var isShowlingChecklist: Bool = false
+    ///bool, toggled if link to individual checklists is pressed by user
     @State var toList: Bool = false
+    ///instance of a checklist, given an initail value, will be passed to detail view
     @State var instc_checklist = load(strt: false)[0]
-   // @State var Edit_Main: Bool = false
-  //  @State var Add_Checklist: Bool = false
-    
+    ///toggled from .inactive to .acive in edit button is pressed
     @State var mode: EditMode = .inactive
     
-    func delete(at offsets: IndexSet){
+    /**
+     delete fucntion - deletes a checklist
+     Takes location of checklist "offsets" in the array Checklists, and removes it
+     Writes new array to json file
+     - Parameter offsets: location of checklists to be deleted in the array of all checklists
+     */
+    func delete(at offsets: IndexSet){ //delete function
         Checklists.remove(atOffsets: offsets)
-        writeToJson(Checklists: Checklists)
+        writeToJson(Checklists: Checklists) //updates to json
     }
-    
-    func move(from source: IndexSet, to destination: Int){
+    /**
+     Move function to rearrange checklists
+     
+     Takes location of checklist "offsets" in the array Checklists, and moves it to new position "destination"
+     Then writes changes to json file
+     - Parameters:
+     - source: location of checklists to to relocated
+     - destination: destination where checklist to be moved to
+     */
+    func move(from source: IndexSet, to destination: Int){ //rearrange function
         Checklists.move(fromOffsets: source, toOffset: destination)
-        writeToJson(Checklists: Checklists)
+        writeToJson(Checklists: Checklists) //updates to json
     }
     var body: some View {
-        VStack{
-           
-           NavigationView{
+      
+           NavigationView{ //nav view for checklsits
               
                VStack{
     
                 List{
-                    ForEach(Checklists){ Checklist in
+                    ForEach(Checklists){ Checklist in //each checklist is listed
                         HStack{
                             
-                            Button {
-                                instc_checklist = return_instc_checklist(id: Checklist.id)
-                                toList.toggle()
+                            Button { //button to individual checklists
+                                instc_checklist = return_instc_checklist(id: Checklist.id) //if pressed, get that specific checklists from json file
+                                toList.toggle() //toggle nav link to detail page
                             }label:{
                                 Text(Checklist.name).foregroundColor(.black)
                             }
-                            }.environment(\.editMode, $mode)
+                            }.environment(\.editMode, $mode)// toggle variable mode if edit mode is activated
                         
                    
                     
@@ -164,32 +114,31 @@ struct MasterView: View {
                
                 }.toolbar{
                     ToolbarItem(placement: .navigationBarTrailing){
-                        Button("Add"){
-                            Checklists.append(newChecklist(all_checklists: Checklists))
-                            writeToJson(Checklists: Checklists)
+                        Button("Add"){ //add button to add checklist
+                            Checklists.append(newChecklist(all_checklists: Checklists)) //adds
+                            writeToJson(Checklists: Checklists) //writes to json
                         }
                     }
                     ToolbarItem(placement: .navigationBarLeading){
                         
-                        EditButton()
+                        EditButton() //edit button
                     }
                 }
                    
-                   NavigationLink(
+                   NavigationLink( //nav to to detail view of individual checklist
                     destination: ContentView(instc_checklist: instc_checklist, original: instc_checklist, copy: instc_checklist)
-                                    // .navigationBarBackButtonHidden(true)
                                   ,
-                                  isActive: $toList
+                                  isActive: $toList //activates nav link when toList (toggled when button press) is togglges
                    ){ }
-           }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+           }
                    .onAppear{
-                       Checklists = load(strt: true)
-                           // Copy_Checklists = load(strt: true)
+                       Checklists = load(strt: true) //loads array holding all checklists when master view appears so data in up-to-date
+                           
                    }
                    .navigationTitle("Checklists")
                  
            }
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+   
             
             
     }

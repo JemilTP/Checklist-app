@@ -3,19 +3,11 @@
 //  Checklist
 //
 //  Created by Jemil Pepena on 20/4/2022.
-//
-
+///*
+/*
 import SwiftUI
 
-func add_item( instc_checklist: Checklist, item: String) -> Checklist {
-    var updated = instc_checklist
-    
-    updated.items.id.append(updated.items.id.count)
-    updated.items.itemNames.append(item)
-    updated.items.hasCompleted.append(false)
-   
-    return updated
-}
+
 
 func delete_item(instc_checklist: Checklist, id: Int) -> Checklist{
     var ret = instc_checklist
@@ -138,4 +130,5 @@ struct Edit_checklist_Previews: PreviewProvider {
         Edit_checklist()
     }
 }
+*/
 */
